@@ -150,18 +150,6 @@
             transform-origin: center;
         }
         
-        /* Анимация движения вверх на 5px при наведении */
-        .mobile-header:hover {
-            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-            box-shadow: var(--shadow-hover);
-        }
-        
-        /* Анимация движения вверх на 3px при нажатии */
-        .mobile-header:active {
-            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-            transition: all 0.15s ease;
-        }
-        
         .mobile-header::before {
             content: '';
             position: absolute;
@@ -174,6 +162,18 @@
             transform-origin: left;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 2;
+        }
+        
+        /* Анимация движения вверх на 5px при наведении */
+        .mobile-header:hover {
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Анимация движения вверх на 3px при нажатии */
+        .mobile-header:active {
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+            transition: all 0.15s ease;
         }
         
         .mobile-header:hover::before {
@@ -337,7 +337,7 @@
             margin: 40px 0;
             padding: 0;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            min-height: 7000px; /* Увеличен с 500px на 7000px */
+            height: 6000px; /* Фиксированная высота */
             border: 2px solid var(--accent-color);
             opacity: 0;
             transform: translateY(20px);
@@ -380,7 +380,7 @@
         
         .mobile-iframe-container iframe {
             width: 100%;
-            height: 7000px; /* Увеличен с 6000px на 7000px */
+            height: 100%;
             border: none;
         }
         
@@ -439,7 +439,7 @@
         }
         
         /* ДЕСКТОПНАЯ ВЕРСИЯ - ПРОСТАЯ СХЕМА */
-        @media (min-width: 1024px) and (min-aspect-ratio: 4/3) {
+        @media (min-width: 1024px) and (orientation: landscape) {
             .mobile-version {
                 display: none;
             }
@@ -532,9 +532,9 @@
                 flex-shrink: 0;
             }
             
-            /* Карточка с расписанием - УВЕЛИЧЕНА на 5px: 680px (было 675px) */
+            /* Карточка с расписанием */
             .schedule-card {
-                height: 680px; /* Изменено с 675px на 680px */
+                height: 680px; /* Фиксированная высота */
                 display: flex;
                 flex-direction: column;
                 opacity: 0;
@@ -647,7 +647,7 @@
                 flex: 1;
             }
             
-            /* Iframe для десктопной версии - УВЕЛИЧЕН на 5px */
+            /* Iframe для десктопной версии */
             .desktop-iframe-container {
                 background-color: var(--white);
                 border-radius: 16px;
@@ -655,8 +655,8 @@
                 overflow: hidden;
                 padding: 0;
                 transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                height: calc(680px + 30px + 250px + 275px + 5px); /* Изменено: добавил +5px в конце */
-                min-height: 1235px; /* Изменено с 1230px на 1235px */
+                height: calc(680px + 30px + 250px + 275px + 5px); /* Высота из предыдущих вычислений */
+                min-height: 1235px; /* Минимальная высота */
                 border: 2px solid var(--accent-color);
                 opacity: 0;
                 transform: translateX(30px);
@@ -700,7 +700,7 @@
             .desktop-iframe-container iframe {
                 width: 100%;
                 height: 100%;
-                min-height: 1235px; /* Изменено с 1230px на 1235px */
+                min-height: 1235px; /* Минимальная высота */
                 border: none;
                 overflow-y: auto !important;
             }
@@ -735,12 +735,8 @@
                 font-size: 2.2rem;
             }
             
-            .mobile-iframe-container iframe {
-                height: 7000px; /* Увеличен с 6000px на 7000px */
-            }
-            
             .mobile-iframe-container {
-                min-height: 7000px; /* Увеличен с 500px на 7000px */
+                height: 5000px; /* Уменьшено для мобильных */
             }
             
             .card {
@@ -786,12 +782,8 @@
                 font-size: 0.9rem;
             }
             
-            .mobile-iframe-container iframe {
-                height: 7000px; /* Увеличен с 6000px на 7000px */
-            }
-            
             .mobile-iframe-container {
-                min-height: 7000px; /* Увеличен с 500px на 7000px */
+                height: 4000px; /* Уменьшено для маленьких экранов */
             }
         }
         
@@ -825,12 +817,8 @@
                 padding: 20px 15px;
             }
             
-            .mobile-iframe-container iframe {
-                height: 7000px; /* Увеличен с 6000px на 7000px */
-            }
-            
             .mobile-iframe-container {
-                min-height: 7000px; /* Увеличен с 500px на 7000px */
+                height: 7000px;
             }
             
             .container {
@@ -861,14 +849,7 @@
             
             .mobile-iframe-container {
                 margin: 20px 0;
-            }
-            
-            .mobile-iframe-container iframe {
-                height: 7000px; /* Увеличен с 6000px на 7000px */
-            }
-            
-            .mobile-iframe-container {
-                min-height: 7000px; /* Увеличен с 500px на 7000px */
+                height: 4000px;
             }
         }
         
@@ -883,13 +864,12 @@
             }
             
             .schedule-card {
-                height: 730px; /* Изменено с 725px на 730px (увеличение на 5px) */
+                height: 730px;
             }
             
-            /* НАСТРОЙКА ВЫСОТЫ IFRAME ДЛЯ БОЛЬШИХ МОНИТОРОВ */
             .desktop-iframe-container {
-                height: calc(730px + 30px + 250px + 275px + 5px); /* Изменено: добавил +5px в конце */
-                min-height: 1285px; /* Изменено с 1280px на 1285px */
+                height: calc(730px + 30px + 250px + 275px + 5px);
+                min-height: 1285px;
             }
         }
         
@@ -945,11 +925,9 @@
                         </tbody>
                     </table>
                 </div>
-                
-                <!-- КАРТОЧКА С ПОЛЕЗНОЙ ИНФОРМАЦИЕЙ УДАЛЕНА ИЗ МОБИЛЬНОЙ ВЕРСИИ -->
             </div>
             
-            <!-- Iframe с расписанием для мобильной версии - ВСЕГДА СВЕТЛЫЙ (УВЕЛИЧЕН НА 1000px) -->
+            <!-- Iframe с расписанием для мобильной версии - ВСЕГДА СВЕТЛЫЙ -->
             <div class="mobile-iframe-container">
                 <iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
             </div>
@@ -1037,22 +1015,25 @@
     </div>
 
     <script>
-        // Скрипт для адаптации высоты iframe
+        // Скрипт для адаптации высоты iframe (исправленная версия)
         window.addEventListener('message', function (e) {
-            var h = parseInt(e.data, 10);
-            if (!isNaN(h)) {
-                // Обновляем высоту для всех iframe
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    // Для мобильной версии используем 7000px
-                    if (window.innerWidth < 1024 || window.matchMedia("(max-aspect-ratio: 4/3)").matches) {
-                        iframe.style.height = '7000px'; // Изменено с 6000px на 7000px
-                    } else {
-                        // Для десктопной версии используем переданную высоту или минимум 1235px
-                        iframe.style.height = Math.max(h, 1235) + 'px';
-                        // Добавляем прокрутку для десктопной версии
-                        iframe.style.overflowY = 'auto';
-                    }
-                });
+            // Проверяем, что данные существуют и являются числом
+            if (e.data && !isNaN(e.data)) {
+                var h = parseInt(e.data, 10);
+                if (h > 0) {
+                    // Обновляем высоту для всех iframe
+                    document.querySelectorAll('iframe').forEach(iframe => {
+                        // Для мобильной версии используем фиксированные значения
+                        if (window.innerWidth < 1024 || window.innerWidth < window.innerHeight) {
+                            // Для мобильных - высота из CSS (уже задана)
+                            console.log('Мобильная версия: высота фиксирована в CSS');
+                        } else {
+                            // Для десктопной версии используем переданную высоту или минимум 1235px
+                            iframe.style.height = Math.max(h, 1235) + 'px';
+                            iframe.style.overflowY = 'auto';
+                        }
+                    });
+                }
             }
         }, false);
         
@@ -1073,9 +1054,9 @@
                 });
             });
             
-            // Автоматическое определение и переключение версий
+            // Автоматическое определение и переключение версий (исправленная)
             function updateVersion() {
-                const isDesktop = window.innerWidth >= 1024 && window.matchMedia("(min-aspect-ratio: 4/3)").matches;
+                const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
                 document.querySelector('.mobile-version').style.display = isDesktop ? 'none' : 'block';
                 document.querySelector('.desktop-version').style.display = isDesktop ? 'block' : 'none';
                 
@@ -1085,10 +1066,11 @@
                     if (isDesktop) {
                         // Для десктопной версии - адаптивная высота и прокрутка
                         iframe.style.minHeight = '1235px';
+                        iframe.style.height = 'auto';
                         iframe.style.overflowY = 'auto';
                     } else {
-                        // Для мобильной версии - 7000px
-                        iframe.style.height = '7000px'; // Изменено с 6000px на 7000px
+                        // Для мобильной версии - высота из CSS
+                        iframe.style.height = '100%';
                         iframe.style.overflowY = 'scroll';
                     }
                 });
@@ -1110,6 +1092,18 @@
             
             // Инициализируем тему при загрузке
             updateTheme();
+            
+            // Отправляем сообщение для получения высоты iframe
+            setTimeout(() => {
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    try {
+                        iframe.contentWindow.postMessage('getHeight', '*');
+                    } catch(e) {
+                        console.log('Не удалось отправить сообщение iframe');
+                    }
+                });
+            }, 1000);
             
             // Добавляем общие hover и active эффекты для всех карточек
             const style = document.createElement('style');
@@ -1156,7 +1150,7 @@
                     transition: opacity 0.3s ease, background-image 0.3s ease;
                 }
                 
-                /* Усиление теней и движений в тёмной теме */
+                /* Усиление теней в тёмной теме */
                 @media (prefers-color-scheme: dark) {
                     .mobile-header, .desktop-header,
                     .card, .mobile-iframe-container, .desktop-iframe-container,
