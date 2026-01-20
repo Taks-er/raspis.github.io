@@ -150,13 +150,15 @@
             transform-origin: center;
         }
         
+        /* Анимация движения вверх на 5px при наведении */
         .mobile-header:hover {
-            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
             box-shadow: var(--shadow-hover);
         }
         
+        /* Анимация движения вверх на 3px при нажатии */
         .mobile-header:active {
-            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
             transition: all 0.15s ease;
         }
         
@@ -242,13 +244,15 @@
             z-index: 2;
         }
         
+        /* Анимация движения вверх на 5px при наведении */
         .card:hover {
-            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
             box-shadow: var(--shadow-hover);
         }
         
+        /* Анимация движения вверх на 3px при нажатии */
         .card:active {
-            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
             transition: all 0.15s ease;
         }
         
@@ -358,13 +362,15 @@
             z-index: 2;
         }
         
+        /* Анимация движения вверх на 5px при наведении */
         .mobile-iframe-container:hover {
-            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
             box-shadow: var(--shadow-hover);
         }
         
+        /* Анимация движения вверх на 3px при нажатии */
         .mobile-iframe-container:active {
-            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
             transition: all 0.15s ease;
         }
         
@@ -416,13 +422,15 @@
             z-index: 2;
         }
         
+        /* Анимация движения вверх на 5px при наведении */
         .footer:hover {
-            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
             box-shadow: var(--shadow-hover);
         }
         
+        /* Анимация движения вверх на 3px при нажатии */
         .footer:active {
-            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
             transition: all 0.15s ease;
         }
         
@@ -478,13 +486,15 @@
                 z-index: 2;
             }
             
+            /* Анимация движения вверх на 5px при наведении */
             .desktop-header:hover {
-                transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+                transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
                 box-shadow: var(--shadow-hover);
             }
             
+            /* Анимация движения вверх на 3px при нажатии */
             .desktop-header:active {
-                transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+                transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
                 transition: all 0.15s ease;
             }
             
@@ -535,6 +545,7 @@
                 position: relative;
                 cursor: pointer;
                 transform-origin: center;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
             
             .schedule-card::before {
@@ -549,6 +560,18 @@
                 transform-origin: left;
                 transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 z-index: 2;
+            }
+            
+            /* Анимация движения вверх на 5px при наведении */
+            .schedule-card:hover {
+                transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            /* Анимация движения вверх на 3px при нажатии */
+            .schedule-card:active {
+                transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+                transition: all 0.15s ease;
             }
             
             .schedule-card:hover::before {
@@ -586,6 +609,7 @@
                 position: relative;
                 cursor: pointer;
                 transform-origin: center;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
             
             .info-card::before {
@@ -600,6 +624,18 @@
                 transform-origin: left;
                 transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 z-index: 2;
+            }
+            
+            /* Анимация движения вверх на 5px при наведении */
+            .info-card:hover {
+                transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            /* Анимация движения вверх на 3px при нажатии */
+            .info-card:active {
+                transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+                transition: all 0.15s ease;
             }
             
             .info-card:hover::before {
@@ -645,13 +681,15 @@
                 z-index: 2;
             }
             
+            /* Анимация движения вверх на 5px при наведении */
             .desktop-iframe-container:hover {
-                transform: translateY(-8px) translateX(30px) scale(1.02); /* Подъём + увеличение */
+                transform: translateY(-5px) translateX(30px) scale(1.02); /* Движение вверх на 5px + увеличение */
                 box-shadow: var(--shadow-hover);
             }
             
+            /* Анимация движения вверх на 3px при нажатии */
             .desktop-iframe-container:active {
-                transform: translateY(-6px) translateX(30px) scale(1.01); /* Меньшее увеличение при нажатии */
+                transform: translateY(-3px) translateX(30px) scale(1.01); /* Меньшее движение при нажатии */
                 transition: all 0.15s ease;
             }
             
@@ -1118,23 +1156,7 @@
                     transition: opacity 0.3s ease, background-image 0.3s ease;
                 }
                 
-                /* Общие стили для увеличения при наведении и нажатии */
-                .schedule-card, .info-card {
-                    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                    transform-origin: center;
-                }
-                
-                .schedule-card:hover, .info-card:hover {
-                    transform: translateY(-8px) scale(1.02);
-                    box-shadow: var(--shadow-hover);
-                }
-                
-                .schedule-card:active, .info-card:active {
-                    transform: translateY(-6px) scale(1.01);
-                    transition: all 0.15s ease;
-                }
-                
-                /* Усиление теней в тёмной теме */
+                /* Усиление теней и движений в тёмной теме */
                 @media (prefers-color-scheme: dark) {
                     .mobile-header, .desktop-header,
                     .card, .mobile-iframe-container, .desktop-iframe-container,
@@ -1146,22 +1168,22 @@
                     .card:hover, .mobile-iframe-container:hover, .desktop-iframe-container:hover,
                     .footer:hover, .schedule-card:hover, .info-card:hover {
                         box-shadow: 0 20px 50px rgba(255, 255, 255, 0.35);
-                        transform: translateY(-10px) scale(1.03);
+                        transform: translateY(-5px) scale(1.03); /* Сохраняем движение на 5px, увеличение на 3% */
                     }
                     
                     .desktop-iframe-container:hover {
-                        transform: translateY(-10px) translateX(30px) scale(1.03);
+                        transform: translateY(-5px) translateX(30px) scale(1.03);
                     }
                     
                     .mobile-header:active, .desktop-header:active,
                     .card:active, .mobile-iframe-container:active, .desktop-iframe-container:active,
                     .footer:active, .schedule-card:active, .info-card:active {
-                        transform: translateY(-8px) scale(1.02);
+                        transform: translateY(-3px) scale(1.02);
                         transition: all 0.15s ease;
                     }
                     
                     .desktop-iframe-container:active {
-                        transform: translateY(-8px) translateX(30px) scale(1.02);
+                        transform: translateY(-3px) translateX(30px) scale(1.02);
                     }
                 }
             `;
