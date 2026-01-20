@@ -1,1173 +1,1173 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<title>Современное расписание для МТ1-24</title>
-<style>
-/* Основные стили и переменные - СВЕТЛАЯ ТЕМА */
-:root {
---primary-color: #9c27b0; /* Фиолетовый */
---primary-light: #ce93d8;
---primary-dark: #6a1b9a;
---accent-color: #e1bee7;
---text-color: #333333;
---light-bg: #f5f5f5;
---white: #ffffff;
---shadow: 0 6px 16px rgba(156, 39, 176, 0.15);
---shadow-hover: 0 15px 35px rgba(156, 39, 176, 0.25);
-
-/* Новые переменные для таблицы */
---table-header-bg: #4a0072; /* Тёмный фиолетовый для заголовка таблицы */
---table-time-color: #4a0072; /* Тёмный фиолетовый для времени */
---table-text-color: #000000; /* Чёрный для остального текста в таблице */
-
-/* Переменные для фона - СВЕТЛАЯ ТЕМА */
---body-bg: #f5f5f5;
---pattern-color-1: rgba(156, 39, 176, 0.05);
---pattern-color-2: rgba(225, 190, 231, 0.05);
-}
-
-/* ТЁМНАЯ ТЕМА - УСИЛЕННЫЕ ЭФФЕКТЫ */
-@media (prefers-color-scheme: dark) {
-:root {
-/* Тёмный фон с более сложным узором */
---body-bg: #1a0525; /* Более тёмный фиолетовый фон */
-
-/* Цвета для надписей и плиток (остаются светлыми) */
---primary-color: #9c27b0; /* Оставляем обычный фиолетовый для светлых плиток */
---primary-light: #ce93d8;
---primary-dark: #6a1b9a;
---accent-color: #e1bee7;
---text-color: #000000; /* ЧЁРНЫЙ текст для светлых плиток */
---light-bg: #f5f5f5;
---white: #ffffff;
-/* ОДИНАКОВАЯ БЕЛАЯ ТЕНЬ на 360 градусов в тёмной теме */
---shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
---shadow-hover: 0 20px 50px rgba(255, 255, 255, 0.35);
-
-/* Цвета для таблицы (не меняются в тёмной теме) */
---table-header-bg: #4a0072;
---table-time-color: #4a0072;
---table-text-color: #000000;
-
-/* Паттерн для тёмного фона - более заметный */
---pattern-color-1: rgba(212, 111, 255, 0.12);
---pattern-color-2: rgba(231, 198, 255, 0.08);
-}
-}
-
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-
-body {
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-color: var(--text-color);
-background-color: var(--body-bg);
-min-height: 100vh;
-line-height: 1.6;
-}
-
-/* СЛОЖНЫЙ УЗОРНЫЙ ФОН */
-.pattern-bg {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-z-index: -1;
-opacity: 0.8;
-/* Сложный узор из нескольких слоёв */
-background-image: 
-/* Основной сетчатый узор */
-repeating-linear-gradient(45deg, 
-transparent, 
-transparent 10px, 
-var(--pattern-color-1) 10px, 
-var(--pattern-color-1) 20px),
-repeating-linear-gradient(-45deg, 
-transparent, 
-transparent 10px, 
-var(--pattern-color-2) 10px, 
-var(--pattern-color-2) 20px),
-/* Точки в углах */
-radial-gradient(circle at 10% 10%, var(--pattern-color-1) 1px, transparent 2px),
-radial-gradient(circle at 90% 10%, var(--pattern-color-1) 1px, transparent 2px),
-radial-gradient(circle at 10% 90%, var(--pattern-color-1) 1px, transparent 2px),
-radial-gradient(circle at 90% 90%, var(--pattern-color-1) 1px, transparent 2px),
-/* Центральные круги */
-radial-gradient(circle at 50% 50%, transparent 20%, var(--pattern-color-2) 21%, transparent 22%),
-radial-gradient(circle at 50% 50%, transparent 40%, var(--pattern-color-1) 41%, transparent 42%);
-background-size: 
-200px 200px,
-200px 200px,
-100px 100px,
-100px 100px,
-100px 100px,
-100px 100px,
-300px 300px,
-500px 500px;
-}
-
-/* Основной контент */
-.container {
-max-width: 1400px;
-margin: 0 auto;
-padding: 20px;
-}
-
-/* Мобильная версия по умолчанию */
-.mobile-version {
-display: block;
-}
-
-.desktop-version {
-display: none;
-}
-
-/* Шапка для мобильной версии - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ */
-.mobile-header {
-text-align: center;
-padding: 30px 20px;
-margin-bottom: 20px;
-position: relative;
-background-color: var(--white); /* Белая плитка */
-border-radius: 16px;
-box-shadow: var(--shadow);
-color: #000000; /* Чёрный текст */
-opacity: 0;
-transform: translateY(20px);
-animation: fadeInUp 0.6s ease-out forwards;
-animation-delay: 0.1s;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-border: 2px solid var(--accent-color);
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-cursor: pointer;
-transform-origin: center;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.mobile-header:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.mobile-header:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.mobile-header::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-.mobile-header:hover::before {
-transform: scaleX(1);
-}
-
-.mobile-header::after {
-content: '';
-position: absolute;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%);
-width: 150px;
-height: 4px;
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-}
-
-.mobile-group-title {
-font-size: 2.8rem;
-color: #000000; /* Чёрный текст */
-margin-bottom: 10px;
-font-weight: 800;
-letter-spacing: -0.5px;
-}
-
-.mobile-subtitle {
-font-size: 1.2rem;
-color: #000000; /* Чёрный текст */
-font-weight: 600;
-}
-
-/* Карточки для мобильной версии - ВСЕГДА СВЕТЛЫЕ */
-.mobile-schedule-container {
-display: flex;
-flex-direction: column;
-gap: 25px;
-margin-bottom: 40px;
-}
-
-.card {
-background-color: var(--white);
-border-radius: 16px;
-box-shadow: var(--shadow);
-padding: 25px;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-position: relative;
-border: 2px solid var(--accent-color);
-color: #000000; /* Чёрный текст для всех карточек */
-opacity: 0;
-transform: translateY(20px);
-animation: fadeInUp 0.6s ease-out forwards;
-cursor: pointer;
-transform-origin: center;
-}
-
-.card::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.card:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.card:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.card:hover::before {
-transform: scaleX(1);
-}
-
-.card-title {
-font-size: 1.6rem;
-color: #000000; /* Чёрный заголовок */
-margin-bottom: 20px;
-padding-bottom: 10px;
-border-bottom: 2px solid var(--primary-color);
-text-align: center;
-font-weight: 700;
-}
-
-/* Таблица расписания - ОСОБЫЕ СТИЛИ */
-.table {
-width: 100%;
-border-collapse: collapse;
-font-size: 1rem;
-}
-
-.table thead {
-background-color: var(--table-header-bg); /* Тёмный фиолетовый для заголовка таблицы */
-color: var(--white);
-}
-
-.table th {
-padding: 15px 10px;
-text-align: center;
-font-weight: 700;
-user-select: none;
-font-size: 1.1rem;
-color: var(--white); /* Белый текст в заголовке */
-}
-
-.table tbody tr {
-border-bottom: 1px solid #e0e0e0;
-transition: background-color 0.2s;
-}
-
-.table tbody tr:hover {
-background-color: rgba(156, 39, 176, 0.1); /* Светло-фиолетовый при наведении */
-}
-
-.table td {
-padding: 14px 10px;
-text-align: center;
-user-select: none;
--webkit-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-font-weight: 500;
-}
-
-/* ПЕРВАЯ КОЛОНКА - ЧЁРНЫЙ ТЕКСТ */
-.table td:first-child {
-font-weight: 700;
-color: var(--table-text-color); /* Чёрный */
-}
-
-/* ВТОРАЯ КОЛОНКА - ТЁМНЫЙ ФИОЛЕТОВЫЙ */
-.table td:nth-child(2) {
-color: var(--table-time-color); /* Тёмный фиолетовый */
-font-weight: 600;
-}
-
-/* ТРЕТЬЯ КОЛОНКА - ЧЁРНЫЙ ТЕКСТ */
-.table td:nth-child(3) {
-color: var(--table-text-color); /* Чёрный */
-font-weight: 500;
-}
-
-/* Iframe для мобильной версии - ВСЕГДА СВЕТЛЫЙ */
-.mobile-iframe-container {
-background-color: var(--white);
-border-radius: 16px;
-box-shadow: var(--shadow);
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-margin: 40px 0;
-padding: 0;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-height: 6000px; /* Фиксированная высота */
-border: 2px solid var(--accent-color);
-opacity: 0;
-transform: translateY(20px);
-animation: fadeInUp 0.6s ease-out forwards;
-animation-delay: 0.3s;
-position: relative;
-cursor: pointer;
-transform-origin: center;
-}
-
-.mobile-iframe-container::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.mobile-iframe-container:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.mobile-iframe-container:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.mobile-iframe-container:hover::before {
-transform: scaleX(1);
-}
-
-.mobile-iframe-container iframe {
-width: 100%;
-height: 100%;
-border: none;
-}
-
-/* Футер - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ */
-.footer {
-text-align: center;
-padding: 30px 20px;
-margin-top: 50px;
-color: #000000; /* Чёрный текст */
-font-size: 1rem;
-border-top: 2px solid var(--primary-color);
-background-color: var(--white); /* Белая плитка */
-border-radius: 16px;
-font-weight: 600;
-opacity: 0;
-transform: translateY(20px);
-animation: fadeInUp 0.6s ease-out forwards;
-animation-delay: 0.4s;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-box-shadow: var(--shadow);
-border: 2px solid var(--accent-color);
-position: relative;
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-cursor: pointer;
-transform-origin: center;
-}
-
-.footer::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.footer:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.footer:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.footer:hover::before {
-transform: scaleX(1);
-}
-
-/* ДЕСКТОПНАЯ ВЕРСИЯ - ПРОСТАЯ СХЕМА */
-@media (min-width: 1024px) and (orientation: landscape) {
-.mobile-version {
-display: none;
-}
-
-.desktop-version {
-display: block;
-}
-
-/* Шапка десктопной версии - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ */
-.desktop-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 30px 40px;
-margin-bottom: 30px;
-border-bottom: 2px solid var(--primary-color);
-background-color: var(--white); /* Белая плитка */
-border-radius: 16px;
-box-shadow: var(--shadow);
-color: #000000; /* Чёрный текст */
-opacity: 0;
-transform: translateY(20px);
-animation: fadeInUp 0.6s ease-out forwards;
-animation-delay: 0.1s;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-border: 2px solid var(--accent-color);
-position: relative;
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-cursor: pointer;
-transform-origin: center;
-}
-
-.desktop-header::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.desktop-header:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.desktop-header:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.desktop-header:hover::before {
-transform: scaleX(1);
-}
-
-.desktop-group-title {
-font-size: 3.5rem;
-color: #000000; /* Чёрный текст */
-font-weight: 800;
-margin: 0;
-}
-
-.desktop-subtitle {
-font-size: 1.4rem;
-color: #000000; /* Чёрный текст */
-font-weight: 600;
-text-align: right;
-}
-
-/* Основной контент десктопной версии - ПРОСТАЯ СЕТКА */
-.desktop-content {
-display: flex;
-gap: 30px;
-align-items: flex-start;
-}
-
-/* Левая колонка (расписание + информация) */
-.desktop-left-column {
-width: 450px;
-display: flex;
-flex-direction: column;
-gap: 30px;
-flex-shrink: 0;
-}
-
-/* Карточка с расписанием */
-.schedule-card {
-height: 680px; /* Фиксированная высота */
-display: flex;
-flex-direction: column;
-opacity: 0;
-transform: translateX(-30px);
-animation: slideInLeft 0.6s ease-out forwards;
-animation-delay: 0.2s;
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-position: relative;
-cursor: pointer;
-transform-origin: center;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.schedule-card::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.schedule-card:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.schedule-card:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.schedule-card:hover::before {
-transform: scaleX(1);
-}
-
-.schedule-card .table-container {
-flex: 1;
-overflow-y: auto;
-padding-right: 5px;
-}
-
-.schedule-card .table-container::-webkit-scrollbar {
-width: 8px;
-}
-
-.schedule-card .table-container::-webkit-scrollbar-track {
-background: var(--accent-color);
-border-radius: 4px;
-}
-
-.schedule-card .table-container::-webkit-scrollbar-thumb {
-background: var(--primary-light);
-border-radius: 4px;
-}
-
-/* Карточка с полезной информацией */
-.info-card {
-/* Занимает свою естественную высоту */
-opacity: 0;
-transform: translateX(-30px);
-animation: slideInLeft 0.6s ease-out forwards;
-animation-delay: 0.3s;
-overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
-position: relative;
-cursor: pointer;
-transform-origin: center;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.info-card::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.info-card:hover {
-transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.info-card:active {
-transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.info-card:hover::before {
-transform: scaleX(1);
-}
-
-/* Правая колонка (iframe) */
-.desktop-right-column {
-flex: 1;
-}
-
-/* Iframe для десктопной версии */
-.desktop-iframe-container {
-background-color: var(--white);
-border-radius: 16px;
-box-shadow: var(--shadow);
-overflow: hidden;
-padding: 0;
-transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-height: calc(680px + 30px + 250px + 275px + 5px); /* Высота из предыдущих вычислений */
-min-height: 1235px; /* Минимальная высота */
-border: 2px solid var(--accent-color);
-opacity: 0;
-transform: translateX(30px);
-animation: slideInRight 0.6s ease-out forwards;
-animation-delay: 0.4s;
-position: relative;
-cursor: pointer;
-transform-origin: center;
-}
-
-.desktop-iframe-container::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 6px; /* Утолщённая полоска */
-background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-z-index: 2;
-}
-
-/* Анимация движения вверх на 5px при наведении */
-.desktop-iframe-container:hover {
-transform: translateY(-5px) translateX(30px) scale(1.02); /* Движение вверх на 5px + увеличение */
-box-shadow: var(--shadow-hover);
-}
-
-/* Анимация движения вверх на 3px при нажатии */
-.desktop-iframe-container:active {
-transform: translateY(-3px) translateX(30px) scale(1.01); /* Меньшее движение при нажатии */
-transition: all 0.15s ease;
-}
-
-.desktop-iframe-container:hover::before {
-transform: scaleX(1);
-}
-
-.desktop-iframe-container iframe {
-width: 100%;
-height: 100%;
-min-height: 1235px; /* Минимальная высота */
-border: none;
-overflow-y: auto !important;
-}
-
-/* Анимации */
-@keyframes slideInLeft {
-from {
-opacity: 0;
-transform: translateX(-30px);
-}
-to {
-opacity: 1;
-transform: translateX(0);
-}
-}
-
-@keyframes slideInRight {
-from {
-opacity: 0;
-transform: translateX(30px);
-}
-to {
-opacity: 1;
-transform: translateX(0);
-}
-}
-}
-
-/* Адаптивность для мобильных */
-@media (max-width: 767px) {
-.mobile-group-title {
-font-size: 2.2rem;
-}
-
-.mobile-iframe-container {
-height: 5000px; /* Уменьшено для мобильных */
-}
-
-.card {
-padding: 20px;
-}
-
-.table {
-font-size: 0.95rem;
-}
-
-.table th, .table td {
-padding: 12px 8px;
-}
-
-.mobile-header, .footer {
-padding: 20px 15px;
-}
-}
-
-@media (max-width: 480px) {
-.mobile-group-title {
-font-size: 2rem;
-}
-
-.mobile-header {
-padding: 15px 10px;
-}
-
-.card {
-padding: 15px;
-}
-
-.table {
-font-size: 0.85rem;
-}
-
-.container {
-padding: 10px;
-}
-
-.footer {
-padding: 20px 10px;
-font-size: 0.9rem;
-}
-
-.mobile-iframe-container {
-height: 4000px; /* Уменьшено для маленьких экранов */
-}
-}
-
-/* Для очень высоких разрешений */
-@media (min-width: 1440px) and (min-height: 1440px) and (orientation: portrait) {
-.mobile-version {
-display: block;
-}
-
-.desktop-version {
-display: none;
-}
-
-.mobile-group-title {
-font-size: 3.5rem;
-}
-
-.mobile-subtitle {
-font-size: 1.8rem;
-}
-
-.card-title {
-font-size: 2.2rem;
-}
-
-.table {
-font-size: 1.4rem;
-}
-
-.table th, .table td {
-padding: 20px 15px;
-}
-
-.mobile-iframe-container {
-height: 7000px;
-}
-
-.container {
-max-width: 1200px;
-}
-}
-
-/* Горизонтальная ориентация на мобильных */
-@media (max-height: 600px) and (orientation: landscape) {
-.mobile-header {
-padding: 15px 20px;
-margin-bottom: 15px;
-}
-
-.mobile-group-title {
-font-size: 2rem;
-}
-
-.mobile-schedule-container {
-flex-direction: row;
-flex-wrap: wrap;
-}
-
-.mobile-schedule-container .card {
-flex: 1 1 calc(50% - 15px);
-min-width: 300px;
-}
-
-.mobile-iframe-container {
-margin: 20px 0;
-height: 4000px;
-}
-}
-
-/* Большие мониторы */
-@media (min-width: 1600px) {
-.container {
-max-width: 1600px;
-}
-
-.desktop-left-column {
-width: 500px;
-}
-
-.schedule-card {
-height: 730px;
-}
-
-.desktop-iframe-container {
-height: calc(730px + 30px + 250px + 275px + 5px);
-min-height: 1285px;
-}
-}
-
-/* ОБЩИЕ АНИМАЦИИ ДЛЯ ВСЕХ ПЛИТОК */
-@keyframes fadeInUp {
-from {
-opacity: 0;
-transform: translateY(20px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>Современное расписание для МТ1-24</title>
+    <style>
+        /* Основные стили и переменные - СВЕТЛАЯ ТЕМА */
+        :root {
+            --primary-color: #9c27b0; /* Фиолетовый */
+            --primary-light: #ce93d8;
+            --primary-dark: #6a1b9a;
+            --accent-color: #e1bee7;
+            --text-color: #333333;
+            --light-bg: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 6px 16px rgba(156, 39, 176, 0.15);
+            --shadow-hover: 0 15px 35px rgba(156, 39, 176, 0.25);
+            
+            /* Новые переменные для таблицы */
+            --table-header-bg: #4a0072; /* Тёмный фиолетовый для заголовка таблицы */
+            --table-time-color: #4a0072; /* Тёмный фиолетовый для времени */
+            --table-text-color: #000000; /* Чёрный для остального текста в таблице */
+            
+            /* Переменные для фона - СВЕТЛАЯ ТЕМА */
+            --body-bg: #f5f5f5;
+            --pattern-color-1: rgba(156, 39, 176, 0.05);
+            --pattern-color-2: rgba(225, 190, 231, 0.05);
+        }
+        
+        /* ТЁМНАЯ ТЕМА - УСИЛЕННЫЕ ЭФФЕКТЫ */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Тёмный фон с более сложным узором */
+                --body-bg: #1a0525; /* Более тёмный фиолетовый фон */
+                
+                /* Цвета для надписей и плиток (остаются светлыми) */
+                --primary-color: #9c27b0; /* Оставляем обычный фиолетовый для светлых плиток */
+                --primary-light: #ce93d8;
+                --primary-dark: #6a1b9a;
+                --accent-color: #e1bee7;
+                --text-color: #000000; /* ЧЁРНЫЙ текст для светлых плиток */
+                --light-bg: #f5f5f5;
+                --white: #ffffff;
+                /* ОДИНАКОВАЯ БЕЛАЯ ТЕНЬ на 360 градусов в тёмной теме */
+                --shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+                --shadow-hover: 0 20px 50px rgba(255, 255, 255, 0.35);
+                
+                /* Цвета для таблицы (не меняются в тёмной теме) */
+                --table-header-bg: #4a0072;
+                --table-time-color: #4a0072;
+                --table-text-color: #000000;
+                
+                /* Паттерн для тёмного фона - более заметный */
+                --pattern-color-1: rgba(212, 111, 255, 0.12);
+                --pattern-color-2: rgba(231, 198, 255, 0.08);
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            background-color: var(--body-bg);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* СЛОЖНЫЙ УЗОРНЫЙ ФОН */
+        .pattern-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+            /* Сложный узор из нескольких слоёв */
+            background-image: 
+                /* Основной сетчатый узор */
+                repeating-linear-gradient(45deg, 
+                    transparent, 
+                    transparent 10px, 
+                    var(--pattern-color-1) 10px, 
+                    var(--pattern-color-1) 20px),
+                repeating-linear-gradient(-45deg, 
+                    transparent, 
+                    transparent 10px, 
+                    var(--pattern-color-2) 10px, 
+                    var(--pattern-color-2) 20px),
+                /* Точки в углах */
+                radial-gradient(circle at 10% 10%, var(--pattern-color-1) 1px, transparent 2px),
+                radial-gradient(circle at 90% 10%, var(--pattern-color-1) 1px, transparent 2px),
+                radial-gradient(circle at 10% 90%, var(--pattern-color-1) 1px, transparent 2px),
+                radial-gradient(circle at 90% 90%, var(--pattern-color-1) 1px, transparent 2px),
+                /* Центральные круги */
+                radial-gradient(circle at 50% 50%, transparent 20%, var(--pattern-color-2) 21%, transparent 22%),
+                radial-gradient(circle at 50% 50%, transparent 40%, var(--pattern-color-1) 41%, transparent 42%);
+            background-size: 
+                200px 200px,
+                200px 200px,
+                100px 100px,
+                100px 100px,
+                100px 100px,
+                100px 100px,
+                300px 300px,
+                500px 500px;
+        }
+        
+        /* Основной контент */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Мобильная версия по умолчанию */
+        .mobile-version {
+            display: block;
+        }
+        
+        .desktop-version {
+            display: none;
+        }
+        
+        /* Шапка для мобильной версии - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ */
+        .mobile-header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+            position: relative;
+            background-color: var(--white); /* Белая плитка */
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            color: #000000; /* Чёрный текст */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.1s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid var(--accent-color);
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+            cursor: pointer;
+            transform-origin: center;
+        }
+        
+        /* Анимация движения вверх на 5px при наведении */
+        .mobile-header:hover {
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Анимация движения вверх на 3px при нажатии */
+        .mobile-header:active {
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .mobile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        .mobile-header:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .mobile-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+        }
+        
+        .mobile-group-title {
+            font-size: 2.8rem;
+            color: #000000; /* Чёрный текст */
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        
+        .mobile-subtitle {
+            font-size: 1.2rem;
+            color: #000000; /* Чёрный текст */
+            font-weight: 600;
+        }
+        
+        /* Карточки для мобильной версии - ВСЕГДА СВЕТЛЫЕ */
+        .mobile-schedule-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+            position: relative;
+            border: 2px solid var(--accent-color);
+            color: #000000; /* Чёрный текст для всех карточек */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            cursor: pointer;
+            transform-origin: center;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        /* Анимация движения вверх на 5px при наведении */
+        .card:hover {
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Анимация движения вверх на 3px при нажатии */
+        .card:active {
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            color: #000000; /* Чёрный заголовок */
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        /* Таблица расписания - ОСОБЫЕ СТИЛИ */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+        
+        .table thead {
+            background-color: var(--table-header-bg); /* Тёмный фиолетовый для заголовка таблицы */
+            color: var(--white);
+        }
+        
+        .table th {
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 700;
+            user-select: none;
+            font-size: 1.1rem;
+            color: var(--white); /* Белый текст в заголовке */
+        }
+        
+        .table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+        }
+        
+        .table tbody tr:hover {
+            background-color: rgba(156, 39, 176, 0.1); /* Светло-фиолетовый при наведении */
+        }
+        
+        .table td {
+            padding: 14px 10px;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            font-weight: 500;
+        }
+        
+        /* ПЕРВАЯ КОЛОНКА - ЧЁРНЫЙ ТЕКСТ */
+        .table td:first-child {
+            font-weight: 700;
+            color: var(--table-text-color); /* Чёрный */
+        }
+        
+        /* ВТОРАЯ КОЛОНКА - ТЁМНЫЙ ФИОЛЕТОВЫЙ */
+        .table td:nth-child(2) {
+            color: var(--table-time-color); /* Тёмный фиолетовый */
+            font-weight: 600;
+        }
+        
+        /* ТРЕТЬЯ КОЛОНКА - ЧЁРНЫЙ ТЕКСТ */
+        .table td:nth-child(3) {
+            color: var(--table-text-color); /* Чёрный */
+            font-weight: 500;
+        }
+        
+        /* Iframe для мобильной версии - ВСЕГДА СВЕТЛЫЙ */
+        .mobile-iframe-container {
+            background-color: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+            margin: 40px 0;
+            padding: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 6000px; /* Фиксированная высота */
+            border: 2px solid var(--accent-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.3s;
+            position: relative;
+            cursor: pointer;
+            transform-origin: center;
+        }
+        
+        .mobile-iframe-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        /* Анимация движения вверх на 5px при наведении */
+        .mobile-iframe-container:hover {
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Анимация движения вверх на 3px при нажатии */
+        .mobile-iframe-container:active {
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .mobile-iframe-container:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .mobile-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Футер - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            color: #000000; /* Чёрный текст */
+            font-size: 1rem;
+            border-top: 2px solid var(--primary-color);
+            background-color: var(--white); /* Белая плитка */
+            border-radius: 16px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.4s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow);
+            border: 2px solid var(--accent-color);
+            position: relative;
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+            cursor: pointer;
+            transform-origin: center;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        /* Анимация движения вверх на 5px при наведении */
+        .footer:hover {
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Анимация движения вверх на 3px при нажатии */
+        .footer:active {
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .footer:hover::before {
+            transform: scaleX(1);
+        }
+        
+        /* ДЕСКТОПНАЯ ВЕРСИЯ - ПРОСТАЯ СХЕМА */
+        @media (min-width: 1024px) and (orientation: landscape) {
+            .mobile-version {
+                display: none;
+            }
+            
+            .desktop-version {
+                display: block;
+            }
+            
+            /* Шапка десктопной версии - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ */
+            .desktop-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 30px 40px;
+                margin-bottom: 30px;
+                border-bottom: 2px solid var(--primary-color);
+                background-color: var(--white); /* Белая плитка */
+                border-radius: 16px;
+                box-shadow: var(--shadow);
+                color: #000000; /* Чёрный текст */
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInUp 0.6s ease-out forwards;
+                animation-delay: 0.1s;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                border: 2px solid var(--accent-color);
+                position: relative;
+                overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+                cursor: pointer;
+                transform-origin: center;
+            }
+            
+            .desktop-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            /* Анимация движения вверх на 5px при наведении */
+            .desktop-header:hover {
+                transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            /* Анимация движения вверх на 3px при нажатии */
+            .desktop-header:active {
+                transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+                transition: all 0.15s ease;
+            }
+            
+            .desktop-header:hover::before {
+                transform: scaleX(1);
+            }
+            
+            .desktop-group-title {
+                font-size: 3.5rem;
+                color: #000000; /* Чёрный текст */
+                font-weight: 800;
+                margin: 0;
+            }
+            
+            .desktop-subtitle {
+                font-size: 1.4rem;
+                color: #000000; /* Чёрный текст */
+                font-weight: 600;
+                text-align: right;
+            }
+            
+            /* Основной контент десктопной версии - ПРОСТАЯ СЕТКА */
+            .desktop-content {
+                display: flex;
+                gap: 30px;
+                align-items: flex-start;
+            }
+            
+            /* Левая колонка (расписание + информация) */
+            .desktop-left-column {
+                width: 450px;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                flex-shrink: 0;
+            }
+            
+            /* Карточка с расписанием */
+            .schedule-card {
+                height: 680px; /* Фиксированная высота */
+                display: flex;
+                flex-direction: column;
+                opacity: 0;
+                transform: translateX(-30px);
+                animation: slideInLeft 0.6s ease-out forwards;
+                animation-delay: 0.2s;
+                overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+                position: relative;
+                cursor: pointer;
+                transform-origin: center;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            
+            .schedule-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            /* Анимация движения вверх на 5px при наведении */
+            .schedule-card:hover {
+                transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            /* Анимация движения вверх на 3px при нажатии */
+            .schedule-card:active {
+                transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+                transition: all 0.15s ease;
+            }
+            
+            .schedule-card:hover::before {
+                transform: scaleX(1);
+            }
+            
+            .schedule-card .table-container {
+                flex: 1;
+                overflow-y: auto;
+                padding-right: 5px;
+            }
+            
+            .schedule-card .table-container::-webkit-scrollbar {
+                width: 8px;
+            }
+            
+            .schedule-card .table-container::-webkit-scrollbar-track {
+                background: var(--accent-color);
+                border-radius: 4px;
+            }
+            
+            .schedule-card .table-container::-webkit-scrollbar-thumb {
+                background: var(--primary-light);
+                border-radius: 4px;
+            }
+            
+            /* Карточка с полезной информацией */
+            .info-card {
+                /* Занимает свою естественную высоту */
+                opacity: 0;
+                transform: translateX(-30px);
+                animation: slideInLeft 0.6s ease-out forwards;
+                animation-delay: 0.3s;
+                overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+                position: relative;
+                cursor: pointer;
+                transform-origin: center;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            
+            .info-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            /* Анимация движения вверх на 5px при наведении */
+            .info-card:hover {
+                transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            /* Анимация движения вверх на 3px при нажатии */
+            .info-card:active {
+                transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+                transition: all 0.15s ease;
+            }
+            
+            .info-card:hover::before {
+                transform: scaleX(1);
+            }
+            
+            /* Правая колонка (iframe) */
+            .desktop-right-column {
+                flex: 1;
+            }
+            
+            /* Iframe для десктопной версии */
+            .desktop-iframe-container {
+                background-color: var(--white);
+                border-radius: 16px;
+                box-shadow: var(--shadow);
+                overflow: hidden;
+                padding: 0;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                height: calc(680px + 30px + 250px + 275px + 5px); /* Высота из предыдущих вычислений */
+                min-height: 1235px; /* Минимальная высота */
+                border: 2px solid var(--accent-color);
+                opacity: 0;
+                transform: translateX(30px);
+                animation: slideInRight 0.6s ease-out forwards;
+                animation-delay: 0.4s;
+                position: relative;
+                cursor: pointer;
+                transform-origin: center;
+            }
+            
+            .desktop-iframe-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            /* Анимация движения вверх на 5px при наведении */
+            .desktop-iframe-container:hover {
+                transform: translateY(-5px) translateX(30px) scale(1.02); /* Движение вверх на 5px + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            /* Анимация движения вверх на 3px при нажатии */
+            .desktop-iframe-container:active {
+                transform: translateY(-3px) translateX(30px) scale(1.01); /* Меньшее движение при нажатии */
+                transition: all 0.15s ease;
+            }
+            
+            .desktop-iframe-container:hover::before {
+                transform: scaleX(1);
+            }
+            
+            .desktop-iframe-container iframe {
+                width: 100%;
+                height: 100%;
+                min-height: 1235px; /* Минимальная высота */
+                border: none;
+                overflow-y: auto !important;
+            }
+            
+            /* Анимации */
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        }
+        
+        /* Адаптивность для мобильных */
+        @media (max-width: 767px) {
+            .mobile-group-title {
+                font-size: 2.2rem;
+            }
+            
+            .mobile-iframe-container {
+                height: 5000px; /* Уменьшено для мобильных */
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .table {
+                font-size: 0.95rem;
+            }
+            
+            .table th, .table td {
+                padding: 12px 8px;
+            }
+            
+            .mobile-header, .footer {
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-group-title {
+                font-size: 2rem;
+            }
+            
+            .mobile-header {
+                padding: 15px 10px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .table {
+                font-size: 0.85rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .footer {
+                padding: 20px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .mobile-iframe-container {
+                height: 4000px; /* Уменьшено для маленьких экранов */
+            }
+        }
+        
+        /* Для очень высоких разрешений */
+        @media (min-width: 1440px) and (min-height: 1440px) and (orientation: portrait) {
+            .mobile-version {
+                display: block;
+            }
+            
+            .desktop-version {
+                display: none;
+            }
+            
+            .mobile-group-title {
+                font-size: 3.5rem;
+            }
+            
+            .mobile-subtitle {
+                font-size: 1.8rem;
+            }
+            
+            .card-title {
+                font-size: 2.2rem;
+            }
+            
+            .table {
+                font-size: 1.4rem;
+            }
+            
+            .table th, .table td {
+                padding: 20px 15px;
+            }
+            
+            .mobile-iframe-container {
+                height: 7000px;
+            }
+            
+            .container {
+                max-width: 1200px;
+            }
+        }
+        
+        /* Горизонтальная ориентация на мобильных */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .mobile-header {
+                padding: 15px 20px;
+                margin-bottom: 15px;
+            }
+            
+            .mobile-group-title {
+                font-size: 2rem;
+            }
+            
+            .mobile-schedule-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .mobile-schedule-container .card {
+                flex: 1 1 calc(50% - 15px);
+                min-width: 300px;
+            }
+            
+            .mobile-iframe-container {
+                margin: 20px 0;
+                height: 4000px;
+            }
+        }
+        
+        /* Большие мониторы */
+        @media (min-width: 1600px) {
+            .container {
+                max-width: 1600px;
+            }
+            
+            .desktop-left-column {
+                width: 500px;
+            }
+            
+            .schedule-card {
+                height: 730px;
+            }
+            
+            .desktop-iframe-container {
+                height: calc(730px + 30px + 250px + 275px + 5px);
+                min-height: 1285px;
+            }
+        }
+        
+        /* ОБЩИЕ АНИМАЦИИ ДЛЯ ВСЕХ ПЛИТОК */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
-<!-- СЛОЖНЫЙ УЗОРНЫЙ ФОН -->
-<div class="pattern-bg"></div>
+    <!-- СЛОЖНЫЙ УЗОРНЫЙ ФОН -->
+    <div class="pattern-bg"></div>
+    
+    <div class="container">
+        <!-- МОБИЛЬНАЯ ВЕРСИЯ -->
+        <div class="mobile-version">
+            <!-- ШАПКА - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ -->
+            <header class="mobile-header">
+                <h1 class="mobile-group-title">МТ1-24</h1>
+                <p class="mobile-subtitle">Альтернативное расписание\бета</p>
+            </header>
+            
+            <div class="mobile-schedule-container">
+                <!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ -->
+                <div class="card" style="animation-delay: 0.2s;">
+                    <h2 class="card-title">Расписание уроков</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>№ урока</th>
+                                <th>Время</th>
+                                <th>Перемена</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 урок</td><td>9:00-9:45</td><td>10 минут</td></tr>
+                            <tr><td>2 урок</td><td>9:55-10:40</td><td>10 минут</td></tr>
+                            <tr><td>3 урок</td><td>10:50-11:35</td><td>20 минут</td></tr>
+                            <tr><td>4 урок</td><td>11:55-12:40</td><td>20 минут</td></tr>
+                            <tr><td>5 урок</td><td>13:00-13:45</td><td>15 минут</td></tr>
+                            <tr><td>6 урок</td><td>14:00-14:45</td><td>10 минут</td></tr>
+                            <tr><td>7 урок</td><td>14:55-15:40</td><td>5 минут</td></tr>
+                            <tr><td>8 урок</td><td>15:45-16:30</td><td>5 минут</td></tr>
+                            <tr><td>9 урок</td><td>16:35-17:20</td><td>5 минут</td></tr>
+                            <tr><td>10 урок</td><td>17:25-18:10</td><td>—</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Iframe с расписанием для мобильной версии - ВСЕГДА СВЕТЛЫЙ -->
+            <div class="mobile-iframe-container">
+                <iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
+            </div>
+        </div>
+        
+        <!-- ДЕСКТОПНАЯ ВЕРСИЯ -->
+        <div class="desktop-version">
+            <!-- ШАПКА - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ -->
+            <header class="desktop-header">
+                <h1 class="desktop-group-title">МТ1-24</h1>
+                <p class="desktop-subtitle">Альтернативное расписание для группы МТ1-24\бета</p>
+            </header>
+            
+            <div class="desktop-content">
+                <!-- Левая колонка -->
+                <div class="desktop-left-column">
+                    <!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ -->
+                    <div class="card schedule-card">
+                        <h2 class="card-title">Расписание уроков</h2>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>№ урока</th>
+                                        <th>Время</th>
+                                        <th>Перемена</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>1 урок</td><td>9:00-9:45</td><td>10 минут</td></tr>
+                                    <tr><td>2 урок</td><td>9:55-10:40</td><td>10 минут</td></tr>
+                                    <tr><td>3 урок</td><td>10:50-11:35</td><td>20 минут</td></tr>
+                                    <tr><td>4 урок</td><td>11:55-12:40</td><td>20 минут</td></tr>
+                                    <tr><td>5 урок</td><td>13:00-13:45</td><td>15 минут</td></tr>
+                                    <tr><td>6 урок</td><td>14:00-14:45</td><td>10 минут</td></tr>
+                                    <tr><td>7 урок</td><td>14:55-15:40</td><td>5 минут</td></tr>
+                                    <tr><td>8 урок</td><td>15:45-16:30</td><td>5 минут</td></tr>
+                                    <tr><td>9 урок</td><td>16:35-17:20</td><td>5 минут</td></tr>
+                                    <tr><td>10 урок</td><td>17:25-18:10</td><td>—</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка с дополнительной информацией - ВСЕГДА СВЕТЛАЯ -->
+                    <div class="card info-card">
+                        <h2 class="card-title">Полезная информация</h2>
+                        <div style="padding: 15px 0;">
+                            <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color);">
+                                <h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Общая продолжительность учебного дня</h3>
+                                <p style="font-weight: 600; color: #000000;">С 9:00 до 18:10 (9 часов 10 минут)</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color);">
+                                <h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Самые длинные перемены</h3>
+                                <p style="font-weight: 600; color: #000000;">20 минут после 3 и 4 уроков</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color);">
+                                <h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Перемена 15 минут</h3>
+                                <p style="font-weight: 600; color: #000000;">После 5 урока - время для обеда</p>
+                            </div>
+                            
+                            <div>
+                                <h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Короткие перемены</h3>
+                                <p style="font-weight: 600; color: #000000;">5 минут после 7, 8 и 9 уроков</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Правая колонка (увеличенный iframe) - ВСЕГДА СВЕТЛАЯ -->
+                <div class="desktop-right-column">
+                    <div class="desktop-iframe-container">
+                        <iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ФУТЕР - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ -->
+        <footer class="footer">
+            <p>Современное расписание для группы МТ1-24 | Адаптивный дизайн для всех устройств</p>
+        </footer>
+    </div>
 
-<div class="container">
-<!-- МОБИЛЬНАЯ ВЕРСИЯ -->
-<div class="mobile-version">
-<!-- ШАПКА - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ -->
-<header class="mobile-header">
-<h1 class="mobile-group-title">МТ1-24</h1>
-<p class="mobile-subtitle">Альтернативное расписание\бета</p>
-</header>
-
-<div class="mobile-schedule-container">
-<!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ -->
-<div class="card" style="animation-delay: 0.2s;">
-<h2 class="card-title">Расписание уроков</h2>
-<table class="table">
-<thead>
-<tr>
-<th>№ урока</th>
-<th>Время</th>
-<th>Перемена</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>1 урок</td><td>9:00-9:45</td><td>10 минут</td></tr>
-<tr><td>2 урок</td><td>9:55-10:40</td><td>10 минут</td></tr>
-<tr><td>3 урок</td><td>10:50-11:35</td><td>20 минут</td></tr>
-<tr><td>4 урок</td><td>11:55-12:40</td><td>20 минут</td></tr>
-<tr><td>5 урок</td><td>13:00-13:45</td><td>15 минут</td></tr>
-<tr><td>6 урок</td><td>14:00-14:45</td><td>10 минут</td></tr>
-<tr><td>7 урок</td><td>14:55-15:40</td><td>5 минут</td></tr>
-<tr><td>8 урок</td><td>15:45-16:30</td><td>5 минут</td></tr>
-<tr><td>9 урок</td><td>16:35-17:20</td><td>5 минут</td></tr>
-<tr><td>10 урок</td><td>17:25-18:10</td><td>—</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<!-- Iframe с расписанием для мобильной версии - ВСЕГДА СВЕТЛЫЙ -->
-<div class="mobile-iframe-container">
-<iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
-</div>
-</div>
-
-<!-- ДЕСКТОПНАЯ ВЕРСИЯ -->
-<div class="desktop-version">
-<!-- ШАПКА - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ -->
-<header class="desktop-header">
-<h1 class="desktop-group-title">МТ1-24</h1>
-<p class="desktop-subtitle">Альтернативное расписание для группы МТ1-24\бета</p>
-</header>
-
-<div class="desktop-content">
-<!-- Левая колонка -->
-<div class="desktop-left-column">
-<!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ -->
-<div class="card schedule-card">
-<h2 class="card-title">Расписание уроков</h2>
-<div class="table-container">
-<table class="table">
-<thead>
-<tr>
-<th>№ урока</th>
-<th>Время</th>
-<th>Перемена</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>1 урок</td><td>9:00-9:45</td><td>10 минут</td></tr>
-<tr><td>2 урок</td><td>9:55-10:40</td><td>10 минут</td></tr>
-<tr><td>3 урок</td><td>10:50-11:35</td><td>20 минут</td></tr>
-<tr><td>4 урок</td><td>11:55-12:40</td><td>20 минут</td></tr>
-<tr><td>5 урок</td><td>13:00-13:45</td><td>15 минут</td></tr>
-<tr><td>6 урок</td><td>14:00-14:45</td><td>10 минут</td></tr>
-<tr><td>7 урок</td><td>14:55-15:40</td><td>5 минут</td></tr>
-<tr><td>8 урок</td><td>15:45-16:30</td><td>5 минут</td></tr>
-<tr><td>9 урок</td><td>16:35-17:20</td><td>5 минут</td></tr>
-<tr><td>10 урок</td><td>17:25-18:10</td><td>—</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<!-- Карточка с дополнительной информацией - ВСЕГДА СВЕТЛАЯ -->
-<div class="card info-card">
-<h2 class="card-title">Полезная информация</h2>
-<div style="padding: 15px 0;">
-<div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color);">
-<h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Общая продолжительность учебного дня</h3>
-<p style="font-weight: 600; color: #000000;">С 9:00 до 18:10 (9 часов 10 минут)</p>
-</div>
-
-<div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color);">
-<h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Самые длинные перемены</h3>
-<p style="font-weight: 600; color: #000000;">20 минут после 3 и 4 уроков</p>
-</div>
-
-<div style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent-color);">
-<h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Перемена 15 минут</h3>
-<p style="font-weight: 600; color: #000000;">После 5 урока - время для обеда</p>
-</div>
-
-<div>
-<h3 style="color: #000000; margin-bottom: 10px; font-weight: 700;">Короткие перемены</h3>
-<p style="font-weight: 600; color: #000000;">5 минут после 7, 8 и 9 уроков</p>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Правая колонка (увеличенный iframe) - ВСЕГДА СВЕТЛАЯ -->
-<div class="desktop-right-column">
-<div class="desktop-iframe-container">
-<iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
-</div>
-</div>
-</div>
-</div>
-
-<!-- ФУТЕР - СВЕТЛАЯ ПЛИТКА С ЧЁРНЫМ ТЕКСТОМ -->
-<footer class="footer">
-<p>Современное расписание для группы МТ1-24 | Адаптивный дизайн для всех устройств</p>
-</footer>
-</div>
-
-<script>
-// Скрипт для адаптации высоты iframe (исправленная версия)
-window.addEventListener('message', function (e) {
-// Проверяем, что данные существуют и являются числом
-if (e.data && !isNaN(e.data)) {
-var h = parseInt(e.data, 10);
-if (h > 0) {
-// Обновляем высоту только для десктопной версии
-document.querySelectorAll('iframe').forEach(iframe => {
-// Только для десктопной версии обновляем высоту
-const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
-if (isDesktop) {
-iframe.style.height = Math.max(h, 1235) + 'px';
-iframe.style.overflowY = 'auto';
-}
-});
-}
-}
-}, false);
-
-// Предотвращаем выделение текста в таблице при клике
-document.addEventListener('DOMContentLoaded', function() {
-const tableCells = document.querySelectorAll('.table td, .table th');
-
-tableCells.forEach(cell => {
-// Отключаем выделение текста
-cell.style.userSelect = 'none';
-cell.style.webkitUserSelect = 'none';
-cell.style.mozUserSelect = 'none';
-cell.style.msUserSelect = 'none';
-
-// Предотвращаем контекстное меню
-cell.addEventListener('contextmenu', function(e) {
-e.preventDefault();
-});
-});
-
-// Автоматическое определение и переключение версий
-function updateVersion() {
-const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
-document.querySelector('.mobile-version').style.display = isDesktop ? 'none' : 'block';
-document.querySelector('.desktop-version').style.display = isDesktop ? 'block' : 'none';
-
-// Настраиваем iframe в зависимости от версии
-const iframes = document.querySelectorAll('iframe');
-iframes.forEach(iframe => {
-if (isDesktop) {
-// Для десктопной версии - адаптивная высота и прокрутка
-iframe.style.minHeight = '1235px';
-iframe.style.height = 'auto';
-iframe.style.overflowY = 'auto';
-} else {
-// Для мобильной версии - высота из CSS
-iframe.style.height = '100%';
-iframe.style.overflowY = 'scroll';
-}
-});
-}
-
-// Инициализация и отслеживание изменения размера окна
-updateVersion();
-window.addEventListener('resize', updateVersion);
-window.addEventListener('orientationchange', updateVersion);
-
-// Функция для обновления темы в реальном времени
-function updateTheme() {
-const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-}
-
-// Слушаем изменения темы устройства
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
-
-// Инициализируем тему при загрузке
-updateTheme();
-
-// Добавляем общие hover и active эффекты для всех карточек
-const style = document.createElement('style');
-style.textContent = `
-/* Убираем любые эффекты выделения в таблице */
-.table td::selection, .table th::selection {
-background: transparent;
-}
-
-.table td::-moz-selection, .table th::-moz-selection {
-background: transparent;
-}
-
-/* Стили для прокрутки iframe в десктопной версии */
-.desktop-iframe-container iframe {
-scrollbar-width: thin;
-scrollbar-color: var(--primary-light) var(--accent-color);
-}
-
-.desktop-iframe-container iframe::-webkit-scrollbar {
-width: 8px;
-}
-
-.desktop-iframe-container iframe::-webkit-scrollbar-track {
-background: var(--accent-color);
-border-radius: 4px;
-}
-
-.desktop-iframe-container iframe::-webkit-scrollbar-thumb {
-background: var(--primary-light);
-border-radius: 4px;
-}
-
-.desktop-iframe-container iframe::-webkit-scrollbar-thumb:hover {
-background: var(--primary-color);
-}
-
-/* Плавный переход между темами ТОЛЬКО для фона */
-body {
-transition: background-color 0.3s ease;
-}
-
-.pattern-bg {
-transition: opacity 0.3s ease, background-image 0.3s ease;
-}
-
-/* Усиление теней в тёмной теме */
-@media (prefers-color-scheme: dark) {
-.mobile-header, .desktop-header,
-.card, .mobile-iframe-container, .desktop-iframe-container,
-.footer, .schedule-card, .info-card {
-box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
-}
-
-.mobile-header:hover, .desktop-header:hover,
-.card:hover, .mobile-iframe-container:hover, .desktop-iframe-container:hover,
-.footer:hover, .schedule-card:hover, .info-card:hover {
-box-shadow: 0 20px 50px rgba(255, 255, 255, 0.35);
-transform: translateY(-5px) scale(1.03);
-}
-
-.desktop-iframe-container:hover {
-transform: translateY(-5px) translateX(30px) scale(1.03);
-}
-
-.mobile-header:active, .desktop-header:active,
-.card:active, .mobile-iframe-container:active, .desktop-iframe-container:active,
-.footer:active, .schedule-card:active, .info-card:active {
-transform: translateY(-3px) scale(1.02);
-transition: all 0.15s ease;
-}
-
-.desktop-iframe-container:active {
-transform: translateY(-3px) translateX(30px) scale(1.02);
-}
-}
-`;
-document.head.appendChild(style);
-});
-</script>
+    <script>
+        // Скрипт для адаптации высоты iframe (исправленная версия)
+        window.addEventListener('message', function (e) {
+            // Проверяем, что данные существуют и являются числом
+            if (e.data && !isNaN(e.data)) {
+                var h = parseInt(e.data, 10);
+                if (h > 0) {
+                    // Обновляем высоту только для десктопной версии
+                    document.querySelectorAll('iframe').forEach(iframe => {
+                        // Только для десктопной версии обновляем высоту
+                        const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
+                        if (isDesktop) {
+                            iframe.style.height = Math.max(h, 1235) + 'px';
+                            iframe.style.overflowY = 'auto';
+                        }
+                    });
+                }
+            }
+        }, false);
+        
+        // Предотвращаем выделение текста в таблице при клике
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableCells = document.querySelectorAll('.table td, .table th');
+            
+            tableCells.forEach(cell => {
+                // Отключаем выделение текста
+                cell.style.userSelect = 'none';
+                cell.style.webkitUserSelect = 'none';
+                cell.style.mozUserSelect = 'none';
+                cell.style.msUserSelect = 'none';
+                
+                // Предотвращаем контекстное меню
+                cell.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                });
+            });
+            
+            // Автоматическое определение и переключение версий
+            function updateVersion() {
+                const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
+                document.querySelector('.mobile-version').style.display = isDesktop ? 'none' : 'block';
+                document.querySelector('.desktop-version').style.display = isDesktop ? 'block' : 'none';
+                
+                // Настраиваем iframe в зависимости от версии
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    if (isDesktop) {
+                        // Для десктопной версии - адаптивная высота и прокрутка
+                        iframe.style.minHeight = '1235px';
+                        iframe.style.height = 'auto';
+                        iframe.style.overflowY = 'auto';
+                    } else {
+                        // Для мобильной версии - высота из CSS
+                        iframe.style.height = '100%';
+                        iframe.style.overflowY = 'scroll';
+                    }
+                });
+            }
+            
+            // Инициализация и отслеживание изменения размера окна
+            updateVersion();
+            window.addEventListener('resize', updateVersion);
+            window.addEventListener('orientationchange', updateVersion);
+            
+            // Функция для обновления темы в реальном времени
+            function updateTheme() {
+                const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            }
+            
+            // Слушаем изменения темы устройства
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+            
+            // Инициализируем тему при загрузке
+            updateTheme();
+            
+            // Добавляем общие hover и active эффекты для всех карточек
+            const style = document.createElement('style');
+            style.textContent = `
+                /* Убираем любые эффекты выделения в таблице */
+                .table td::selection, .table th::selection {
+                    background: transparent;
+                }
+                
+                .table td::-moz-selection, .table th::-moz-selection {
+                    background: transparent;
+                }
+                
+                /* Стили для прокрутки iframe в десктопной версии */
+                .desktop-iframe-container iframe {
+                    scrollbar-width: thin;
+                    scrollbar-color: var(--primary-light) var(--accent-color);
+                }
+                
+                .desktop-iframe-container iframe::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                .desktop-iframe-container iframe::-webkit-scrollbar-track {
+                    background: var(--accent-color);
+                    border-radius: 4px;
+                }
+                
+                .desktop-iframe-container iframe::-webkit-scrollbar-thumb {
+                    background: var(--primary-light);
+                    border-radius: 4px;
+                }
+                
+                .desktop-iframe-container iframe::-webkit-scrollbar-thumb:hover {
+                    background: var(--primary-color);
+                }
+                
+                /* Плавный переход между темами ТОЛЬКО для фона */
+                body {
+                    transition: background-color 0.3s ease;
+                }
+                
+                .pattern-bg {
+                    transition: opacity 0.3s ease, background-image 0.3s ease;
+                }
+                
+                /* Усиление теней в тёмной теме */
+                @media (prefers-color-scheme: dark) {
+                    .mobile-header, .desktop-header,
+                    .card, .mobile-iframe-container, .desktop-iframe-container,
+                    .footer, .schedule-card, .info-card {
+                        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+                    }
+                    
+                    .mobile-header:hover, .desktop-header:hover,
+                    .card:hover, .mobile-iframe-container:hover, .desktop-iframe-container:hover,
+                    .footer:hover, .schedule-card:hover, .info-card:hover {
+                        box-shadow: 0 20px 50px rgba(255, 255, 255, 0.35);
+                        transform: translateY(-5px) scale(1.03);
+                    }
+                    
+                    .desktop-iframe-container:hover {
+                        transform: translateY(-5px) translateX(30px) scale(1.03);
+                    }
+                    
+                    .mobile-header:active, .desktop-header:active,
+                    .card:active, .mobile-iframe-container:active, .desktop-iframe-container:active,
+                    .footer:active, .schedule-card:active, .info-card:active {
+                        transform: translateY(-3px) scale(1.02);
+                        transition: all 0.15s ease;
+                    }
+                    
+                    .desktop-iframe-container:active {
+                        transform: translateY(-3px) translateX(30px) scale(1.02);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>
