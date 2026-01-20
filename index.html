@@ -15,8 +15,8 @@
             --text-color: #333333;
             --light-bg: #f5f5f5;
             --white: #ffffff;
-            --shadow: 0 4px 12px rgba(156, 39, 176, 0.1);
-            --shadow-hover: 0 10px 25px rgba(156, 39, 176, 0.2);
+            --shadow: 0 6px 16px rgba(156, 39, 176, 0.15);
+            --shadow-hover: 0 15px 35px rgba(156, 39, 176, 0.25);
             
             /* Новые переменные для таблицы */
             --table-header-bg: #4a0072; /* Тёмный фиолетовый для заголовка таблицы */
@@ -29,7 +29,7 @@
             --pattern-color-2: rgba(225, 190, 231, 0.05);
         }
         
-        /* ТЁМНАЯ ТЕМА - ТОЛЬКО ФОН И НАДПИСИ */
+        /* ТЁМНАЯ ТЕМА - УСИЛЕННЫЕ ЭФФЕКТЫ */
         @media (prefers-color-scheme: dark) {
             :root {
                 /* Тёмный фон с более сложным узором */
@@ -43,8 +43,9 @@
                 --text-color: #000000; /* ЧЁРНЫЙ текст для светлых плиток */
                 --light-bg: #f5f5f5;
                 --white: #ffffff;
-                --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-                --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.6);
+                /* ОДИНАКОВАЯ БЕЛАЯ ТЕНЬ на 360 градусов в тёмной теме */
+                --shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+                --shadow-hover: 0 20px 50px rgba(255, 255, 255, 0.35);
                 
                 /* Цвета для таблицы (не меняются в тёмной теме) */
                 --table-header-bg: #4a0072;
@@ -52,8 +53,8 @@
                 --table-text-color: #000000;
                 
                 /* Паттерн для тёмного фона - более заметный */
-                --pattern-color-1: rgba(212, 111, 255, 0.08);
-                --pattern-color-2: rgba(231, 198, 255, 0.05);
+                --pattern-color-1: rgba(212, 111, 255, 0.12);
+                --pattern-color-2: rgba(231, 198, 255, 0.08);
             }
         }
         
@@ -79,7 +80,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.7;
+            opacity: 0.8;
             /* Сложный узор из нескольких слоёв */
             background-image: 
                 /* Основной сетчатый узор */
@@ -135,20 +136,46 @@
             margin-bottom: 20px;
             position: relative;
             background-color: var(--white); /* Белая плитка */
-            border-radius: 12px;
+            border-radius: 16px;
             box-shadow: var(--shadow);
             color: #000000; /* Чёрный текст */
-            /* Анимация для верхней плитки */
-            animation: slideDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform: translateY(-30px);
             opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.1s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid var(--accent-color);
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+            cursor: pointer;
+            transform-origin: center;
         }
         
-        @keyframes slideDown {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .mobile-header:hover {
+            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .mobile-header:active {
+            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .mobile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        .mobile-header:hover::before {
+            transform: scaleX(1);
         }
         
         .mobile-header::after {
@@ -159,7 +186,7 @@
             transform: translateX(-50%);
             width: 150px;
             height: 4px;
-            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
         }
         
         .mobile-group-title {
@@ -189,26 +216,16 @@
             border-radius: 16px;
             box-shadow: var(--shadow);
             padding: 25px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
             position: relative;
-            border: 1px solid var(--accent-color);
+            border: 2px solid var(--accent-color);
             color: #000000; /* Чёрный текст для всех карточек */
-            /* Анимация для карточек */
-            animation: fadeInUp 0.6s ease-out forwards;
             opacity: 0;
             transform: translateY(20px);
-        }
-        
-        .card:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            animation: fadeInUp 0.6s ease-out forwards;
+            cursor: pointer;
+            transform-origin: center;
         }
         
         .card::before {
@@ -217,16 +234,22 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
-            background: var(--primary-color);
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform 0.5s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
         }
         
         .card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
             box-shadow: var(--shadow-hover);
+        }
+        
+        .card:active {
+            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transition: all 0.15s ease;
         }
         
         .card:hover::before {
@@ -251,7 +274,7 @@
         }
         
         .table thead {
-            background-color: var(--table-header-bg); /* Тёмный фиолетовый заголовок */
+            background-color: var(--table-header-bg); /* Тёмный фиолетовый для заголовка таблицы */
             color: var(--white);
         }
         
@@ -301,38 +324,57 @@
             font-weight: 500;
         }
         
-        /* Iframe для мобильной версии - ВСЕГДА СВЕТЛЫЙ */
+        /* Iframe для мобильной версии - ВСЕГДА СВЕТЛЫЙ (УВЕЛИЧЕН НА 1000px) */
         .mobile-iframe-container {
             background-color: var(--white);
             border-radius: 16px;
             box-shadow: var(--shadow);
-            overflow: hidden;
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
             margin: 40px 0;
             padding: 0;
-            transition: all 0.4s ease;
-            min-height: 600px; /* Увеличиваем минимальную высоту */
-            border: 1px solid var(--accent-color);
-            /* Анимация для iframe */
-            animation: scaleIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s forwards;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 7000px; /* Увеличен с 500px на 7000px */
+            border: 2px solid var(--accent-color);
             opacity: 0;
-            transform: scale(0.95);
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.3s;
+            position: relative;
+            cursor: pointer;
+            transform-origin: center;
         }
         
-        @keyframes scaleIn {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .mobile-iframe-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
         }
         
         .mobile-iframe-container:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
             box-shadow: var(--shadow-hover);
+        }
+        
+        .mobile-iframe-container:active {
+            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .mobile-iframe-container:hover::before {
+            transform: scaleX(1);
         }
         
         .mobile-iframe-container iframe {
             width: 100%;
-            height: 7000px; /* УВЕЛИЧИВАЕМ на 1000 пикселей (было 6000px) */
+            height: 7000px; /* Увеличен с 6000px на 7000px */
             border: none;
         }
         
@@ -345,19 +387,47 @@
             font-size: 1rem;
             border-top: 2px solid var(--primary-color);
             background-color: var(--white); /* Белая плитка */
-            border-radius: 12px;
+            border-radius: 16px;
             font-weight: 600;
-            /* Анимация для нижней плитки */
-            animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.6s forwards;
-            transform: translateY(30px);
             opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.4s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow);
+            border: 2px solid var(--accent-color);
+            position: relative;
+            overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+            cursor: pointer;
+            transform-origin: center;
         }
         
-        @keyframes slideUp {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px; /* Утолщённая полоска */
+            background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+        
+        .footer:hover {
+            transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .footer:active {
+            transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
+        .footer:hover::before {
+            transform: scaleX(1);
         }
         
         /* ДЕСКТОПНАЯ ВЕРСИЯ - ПРОСТАЯ СХЕМА */
@@ -382,10 +452,44 @@
                 border-radius: 16px;
                 box-shadow: var(--shadow);
                 color: #000000; /* Чёрный текст */
-                /* Анимация для верхней плитки */
-                animation: slideDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-                transform: translateY(-30px);
                 opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInUp 0.6s ease-out forwards;
+                animation-delay: 0.1s;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                border: 2px solid var(--accent-color);
+                position: relative;
+                overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+                cursor: pointer;
+                transform-origin: center;
+            }
+            
+            .desktop-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            .desktop-header:hover {
+                transform: translateY(-8px) scale(1.02); /* Подъём + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            .desktop-header:active {
+                transform: translateY(-6px) scale(1.01); /* Меньшее увеличение при нажатии */
+                transition: all 0.15s ease;
+            }
+            
+            .desktop-header:hover::before {
+                transform: scaleX(1);
             }
             
             .desktop-group-title {
@@ -418,22 +522,37 @@
                 flex-shrink: 0;
             }
             
-            /* Карточка с расписанием уроков - УВЕЛИЧИВАЕМ на 5px: 680px (было 675px) */
+            /* Карточка с расписанием - УВЕЛИЧЕНА на 5px: 680px (было 675px) */
             .schedule-card {
-                height: 680px; /* УВЕЛИЧИВАЕМ на 5px */
+                height: 680px; /* Изменено с 675px на 680px */
                 display: flex;
                 flex-direction: column;
-                /* Анимация */
-                animation: slideInLeft 0.6s ease-out 0.2s forwards;
                 opacity: 0;
                 transform: translateX(-30px);
+                animation: slideInLeft 0.6s ease-out forwards;
+                animation-delay: 0.2s;
+                overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+                position: relative;
+                cursor: pointer;
+                transform-origin: center;
             }
             
-            @keyframes slideInLeft {
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
+            .schedule-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            .schedule-card:hover::before {
+                transform: scaleX(1);
             }
             
             .schedule-card .table-container {
@@ -459,9 +578,32 @@
             /* Карточка с полезной информацией */
             .info-card {
                 /* Занимает свою естественную высоту */
-                animation: fadeInUp 0.6s ease-out 0.3s forwards;
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateX(-30px);
+                animation: slideInLeft 0.6s ease-out forwards;
+                animation-delay: 0.3s;
+                overflow: hidden; /* Важно: скрываем выходящие за границы элементы */
+                position: relative;
+                cursor: pointer;
+                transform-origin: center;
+            }
+            
+            .info-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            .info-card:hover::before {
+                transform: scaleX(1);
             }
             
             /* Правая колонка (iframe) */
@@ -469,42 +611,83 @@
                 flex: 1;
             }
             
-            /* Iframe для десктопной версии - ВСЕГДА СВЕТЛЫЙ */
+            /* Iframe для десктопной версии - УВЕЛИЧЕН на 5px */
             .desktop-iframe-container {
                 background-color: var(--white);
                 border-radius: 16px;
                 box-shadow: var(--shadow);
                 overflow: hidden;
                 padding: 0;
-                transition: all 0.4s ease;
-                /* Формула: расписание (680px + 5px) + отступ (30px) + инфо карточка (250px) + регулировка (275px) */
-                height: calc(680px + 30px + 250px + 275px); /* УВЕЛИЧИВАЕМ на 5px */
-                min-height: 1235px; /* УВЕЛИЧИВАЕМ на 5px */
-                border: 1px solid var(--accent-color);
-                /* Анимация */
-                animation: slideInRight 0.6s ease-out 0.2s forwards;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                height: calc(680px + 30px + 250px + 275px + 5px); /* Изменено: добавил +5px в конце */
+                min-height: 1235px; /* Изменено с 1230px на 1235px */
+                border: 2px solid var(--accent-color);
                 opacity: 0;
                 transform: translateX(30px);
+                animation: slideInRight 0.6s ease-out forwards;
+                animation-delay: 0.4s;
+                position: relative;
+                cursor: pointer;
+                transform-origin: center;
             }
             
-            @keyframes slideInRight {
+            .desktop-iframe-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 6px; /* Утолщённая полоска */
+                background: var(--primary-color); /* БЕЗ ГРАДИЕНТА - просто цвет */
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                z-index: 2;
+            }
+            
+            .desktop-iframe-container:hover {
+                transform: translateY(-8px) translateX(30px) scale(1.02); /* Подъём + увеличение */
+                box-shadow: var(--shadow-hover);
+            }
+            
+            .desktop-iframe-container:active {
+                transform: translateY(-6px) translateX(30px) scale(1.01); /* Меньшее увеличение при нажатии */
+                transition: all 0.15s ease;
+            }
+            
+            .desktop-iframe-container:hover::before {
+                transform: scaleX(1);
+            }
+            
+            .desktop-iframe-container iframe {
+                width: 100%;
+                height: 100%;
+                min-height: 1235px; /* Изменено с 1230px на 1235px */
+                border: none;
+                overflow-y: auto !important;
+            }
+            
+            /* Анимации */
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-30px);
+                }
                 to {
                     opacity: 1;
                     transform: translateX(0);
                 }
             }
             
-            .desktop-iframe-container:hover {
-                transform: translateY(-5px) translateX(0);
-                box-shadow: var(--shadow-hover);
-            }
-            
-            .desktop-iframe-container iframe {
-                width: 100%;
-                height: 100%;
-                min-height: 1235px; /* УВЕЛИЧИВАЕМ на 5px */
-                border: none;
-                overflow-y: auto !important;
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
             }
         }
         
@@ -515,7 +698,11 @@
             }
             
             .mobile-iframe-container iframe {
-                height: 7000px; /* УВЕЛИЧИВАЕМ на 1000 пикселей */
+                height: 7000px; /* Увеличен с 6000px на 7000px */
+            }
+            
+            .mobile-iframe-container {
+                min-height: 7000px; /* Увеличен с 500px на 7000px */
             }
             
             .card {
@@ -560,6 +747,14 @@
                 padding: 20px 10px;
                 font-size: 0.9rem;
             }
+            
+            .mobile-iframe-container iframe {
+                height: 7000px; /* Увеличен с 6000px на 7000px */
+            }
+            
+            .mobile-iframe-container {
+                min-height: 7000px; /* Увеличен с 500px на 7000px */
+            }
         }
         
         /* Для очень высоких разрешений */
@@ -593,7 +788,11 @@
             }
             
             .mobile-iframe-container iframe {
-                height: 7000px; /* УВЕЛИЧИВАЕМ на 1000 пикселей */
+                height: 7000px; /* Увеличен с 6000px на 7000px */
+            }
+            
+            .mobile-iframe-container {
+                min-height: 7000px; /* Увеличен с 500px на 7000px */
             }
             
             .container {
@@ -627,7 +826,11 @@
             }
             
             .mobile-iframe-container iframe {
-                height: 7000px; /* УВЕЛИЧИВАЕМ на 1000 пикселей */
+                height: 7000px; /* Увеличен с 6000px на 7000px */
+            }
+            
+            .mobile-iframe-container {
+                min-height: 7000px; /* Увеличен с 500px на 7000px */
             }
         }
         
@@ -642,14 +845,25 @@
             }
             
             .schedule-card {
-                height: 730px; /* УВЕЛИЧИВАЕМ на 5px (было 725px) */
+                height: 730px; /* Изменено с 725px на 730px (увеличение на 5px) */
             }
             
             /* НАСТРОЙКА ВЫСОТЫ IFRAME ДЛЯ БОЛЬШИХ МОНИТОРОВ */
             .desktop-iframe-container {
-                /* Формула: расписание (730px) + отступ (30px) + инфо карточка (250px) + регулировка (275px) */
-                height: calc(730px + 30px + 250px + 275px); 
-                min-height: 1285px; /* УВЕЛИЧИВАЕМ на 5px (было 1280px) */
+                height: calc(730px + 30px + 250px + 275px + 5px); /* Изменено: добавил +5px в конце */
+                min-height: 1285px; /* Изменено с 1280px на 1285px */
+            }
+        }
+        
+        /* ОБЩИЕ АНИМАЦИИ ДЛЯ ВСЕХ ПЛИТОК */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -669,7 +883,7 @@
             
             <div class="mobile-schedule-container">
                 <!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ -->
-                <div class="card">
+                <div class="card" style="animation-delay: 0.2s;">
                     <h2 class="card-title">Расписание уроков</h2>
                     <table class="table">
                         <thead>
@@ -694,10 +908,10 @@
                     </table>
                 </div>
                 
-                <!-- УБИРАЕМ КАРТОЧКУ С ПОЛЕЗНОЙ ИНФОРМАЦИЕЙ ИЗ МОБИЛЬНОЙ ВЕРСИИ -->
+                <!-- КАРТОЧКА С ПОЛЕЗНОЙ ИНФОРМАЦИЕЙ УДАЛЕНА ИЗ МОБИЛЬНОЙ ВЕРСИИ -->
             </div>
             
-            <!-- Iframe с расписанием для мобильной версии - ВСЕГДА СВЕТЛЫЙ (увеличен на 1000px) -->
+            <!-- Iframe с расписанием для мобильной версии - ВСЕГДА СВЕТЛЫЙ (УВЕЛИЧЕН НА 1000px) -->
             <div class="mobile-iframe-container">
                 <iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
             </div>
@@ -714,7 +928,7 @@
             <div class="desktop-content">
                 <!-- Левая колонка -->
                 <div class="desktop-left-column">
-                    <!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ (увеличена на 5px) -->
+                    <!-- Карточка с расписанием уроков - ВСЕГДА СВЕТЛАЯ -->
                     <div class="card schedule-card">
                         <h2 class="card-title">Расписание уроков</h2>
                         <div class="table-container">
@@ -769,7 +983,7 @@
                     </div>
                 </div>
                 
-                <!-- Правая колонка (увеличенный iframe на 5px) - ВСЕГДА СВЕТЛАЯ -->
+                <!-- Правая колонка (увеличенный iframe) - ВСЕГДА СВЕТЛАЯ -->
                 <div class="desktop-right-column">
                     <div class="desktop-iframe-container">
                         <iframe src="https://e-spo.ru/org/export/rasp?pid=1" title="Полное расписание группы МТ1-24"></iframe>
@@ -793,10 +1007,10 @@
                 document.querySelectorAll('iframe').forEach(iframe => {
                     // Для мобильной версии используем 7000px
                     if (window.innerWidth < 1024 || window.matchMedia("(max-aspect-ratio: 4/3)").matches) {
-                        iframe.style.height = '7000px'; // УВЕЛИЧИВАЕМ на 1000px
+                        iframe.style.height = '7000px'; // Изменено с 6000px на 7000px
                     } else {
                         // Для десктопной версии используем переданную высоту или минимум 1235px
-                        iframe.style.height = Math.max(h, 1235) + 'px'; // УВЕЛИЧИВАЕМ на 5px
+                        iframe.style.height = Math.max(h, 1235) + 'px';
                         // Добавляем прокрутку для десктопной версии
                         iframe.style.overflowY = 'auto';
                     }
@@ -832,11 +1046,11 @@
                 iframes.forEach(iframe => {
                     if (isDesktop) {
                         // Для десктопной версии - адаптивная высота и прокрутка
-                        iframe.style.minHeight = '1235px'; // УВЕЛИЧИВАЕМ на 5px
+                        iframe.style.minHeight = '1235px';
                         iframe.style.overflowY = 'auto';
                     } else {
                         // Для мобильной версии - 7000px
-                        iframe.style.height = '7000px'; // УВЕЛИЧИВАЕМ на 1000px
+                        iframe.style.height = '7000px'; // Изменено с 6000px на 7000px
                         iframe.style.overflowY = 'scroll';
                     }
                 });
@@ -859,7 +1073,7 @@
             // Инициализируем тему при загрузке
             updateTheme();
             
-            // Добавляем стили для анимации
+            // Добавляем общие hover и active эффекты для всех карточек
             const style = document.createElement('style');
             style.textContent = `
                 /* Убираем любые эффекты выделения в таблице */
@@ -902,6 +1116,53 @@
                 
                 .pattern-bg {
                     transition: opacity 0.3s ease, background-image 0.3s ease;
+                }
+                
+                /* Общие стили для увеличения при наведении и нажатии */
+                .schedule-card, .info-card {
+                    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    transform-origin: center;
+                }
+                
+                .schedule-card:hover, .info-card:hover {
+                    transform: translateY(-8px) scale(1.02);
+                    box-shadow: var(--shadow-hover);
+                }
+                
+                .schedule-card:active, .info-card:active {
+                    transform: translateY(-6px) scale(1.01);
+                    transition: all 0.15s ease;
+                }
+                
+                /* Усиление теней в тёмной теме */
+                @media (prefers-color-scheme: dark) {
+                    .mobile-header, .desktop-header,
+                    .card, .mobile-iframe-container, .desktop-iframe-container,
+                    .footer, .schedule-card, .info-card {
+                        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+                    }
+                    
+                    .mobile-header:hover, .desktop-header:hover,
+                    .card:hover, .mobile-iframe-container:hover, .desktop-iframe-container:hover,
+                    .footer:hover, .schedule-card:hover, .info-card:hover {
+                        box-shadow: 0 20px 50px rgba(255, 255, 255, 0.35);
+                        transform: translateY(-10px) scale(1.03);
+                    }
+                    
+                    .desktop-iframe-container:hover {
+                        transform: translateY(-10px) translateX(30px) scale(1.03);
+                    }
+                    
+                    .mobile-header:active, .desktop-header:active,
+                    .card:active, .mobile-iframe-container:active, .desktop-iframe-container:active,
+                    .footer:active, .schedule-card:active, .info-card:active {
+                        transform: translateY(-8px) scale(1.02);
+                        transition: all 0.15s ease;
+                    }
+                    
+                    .desktop-iframe-container:active {
+                        transform: translateY(-8px) translateX(30px) scale(1.02);
+                    }
                 }
             `;
             document.head.appendChild(style);
