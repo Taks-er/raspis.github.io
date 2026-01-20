@@ -150,6 +150,18 @@
             transform-origin: center;
         }
         
+        /* Анимация движения вверх на 5px при наведении */
+        .mobile-header:hover {
+            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Анимация движения вверх на 3px при нажатии */
+        .mobile-header:active {
+            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
+            transition: all 0.15s ease;
+        }
+        
         .mobile-header::before {
             content: '';
             position: absolute;
@@ -162,18 +174,6 @@
             transform-origin: left;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 2;
-        }
-        
-        /* Анимация движения вверх на 5px при наведении */
-        .mobile-header:hover {
-            transform: translateY(-5px) scale(1.02); /* Движение вверх на 5px + увеличение */
-            box-shadow: var(--shadow-hover);
-        }
-        
-        /* Анимация движения вверх на 3px при нажатии */
-        .mobile-header:active {
-            transform: translateY(-3px) scale(1.01); /* Меньшее движение при нажатии */
-            transition: all 0.15s ease;
         }
         
         .mobile-header:hover::before {
@@ -328,7 +328,7 @@
             font-weight: 500;
         }
         
-        /* Iframe для мобильной версии - ВСЕГДА СВЕТЛЫЙ (УВЕЛИЧЕН НА 1000px) */
+        /* Iframe для мобильной версии - ВСЕГДА СВЕТЛЫЙ */
         .mobile-iframe-container {
             background-color: var(--white);
             border-radius: 16px;
@@ -1021,14 +1021,11 @@
             if (e.data && !isNaN(e.data)) {
                 var h = parseInt(e.data, 10);
                 if (h > 0) {
-                    // Обновляем высоту для всех iframe
+                    // Обновляем высоту только для десктопной версии
                     document.querySelectorAll('iframe').forEach(iframe => {
-                        // Для мобильной версии используем фиксированные значения
-                        if (window.innerWidth < 1024 || window.innerWidth < window.innerHeight) {
-                            // Для мобильных - высота из CSS (уже задана)
-                            console.log('Мобильная версия: высота фиксирована в CSS');
-                        } else {
-                            // Для десктопной версии используем переданную высоту или минимум 1235px
+                        // Только для десктопной версии обновляем высоту
+                        const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
+                        if (isDesktop) {
                             iframe.style.height = Math.max(h, 1235) + 'px';
                             iframe.style.overflowY = 'auto';
                         }
@@ -1054,7 +1051,7 @@
                 });
             });
             
-            // Автоматическое определение и переключение версий (исправленная)
+            // Автоматическое определение и переключение версий
             function updateVersion() {
                 const isDesktop = window.innerWidth >= 1024 && window.innerWidth > window.innerHeight;
                 document.querySelector('.mobile-version').style.display = isDesktop ? 'none' : 'block';
@@ -1092,18 +1089,6 @@
             
             // Инициализируем тему при загрузке
             updateTheme();
-            
-            // Отправляем сообщение для получения высоты iframe
-            setTimeout(() => {
-                const iframes = document.querySelectorAll('iframe');
-                iframes.forEach(iframe => {
-                    try {
-                        iframe.contentWindow.postMessage('getHeight', '*');
-                    } catch(e) {
-                        console.log('Не удалось отправить сообщение iframe');
-                    }
-                });
-            }, 1000);
             
             // Добавляем общие hover и active эффекты для всех карточек
             const style = document.createElement('style');
@@ -1162,7 +1147,7 @@
                     .card:hover, .mobile-iframe-container:hover, .desktop-iframe-container:hover,
                     .footer:hover, .schedule-card:hover, .info-card:hover {
                         box-shadow: 0 20px 50px rgba(255, 255, 255, 0.35);
-                        transform: translateY(-5px) scale(1.03); /* Сохраняем движение на 5px, увеличение на 3% */
+                        transform: translateY(-5px) scale(1.03);
                     }
                     
                     .desktop-iframe-container:hover {
